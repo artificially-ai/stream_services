@@ -13,4 +13,4 @@ ENV STREAM_SERVICES_PORT=8088
 EXPOSE $STREAM_SERVICES_PORT
 
 ENTRYPOINT ["python3"]
-CMD ["StreamServices.py"]
+CMD ["app/StreamServices.py"]

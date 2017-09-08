@@ -1,5 +1,5 @@
-from FFMpegService import ffmpeg_service
-from OCRService import ocr_service
+from controller.FFMpegService import ffmpeg_service
+from controller.OCRService import ocr_service
 
 from flask import Flask, redirect
 
