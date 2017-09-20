@@ -7,5 +7,5 @@ This repository contains WebServices used to inspect video and audio streams.
 
 ## Inspect Stream
 
-* ```curl -X POST -v "http://localhost:8088/ffmpeg/[url_to_video_file]```
-  - Sends a URL [mp4/mkv file] to the Flask WebServices to have its details extracted
+* ```curl -H "Content-Type: application/json" -X POST -v -d '{"url" : "URL_TO_VIDEO"}' http://localhost:8088/ffmpeg/streamDetails```
+  - Sends a URL [mp4/mkv/avi file] to the Flask WebServices to have its details extracted
