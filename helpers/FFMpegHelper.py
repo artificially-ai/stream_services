@@ -14,21 +14,22 @@ class FFMpeg:
         ffmpeg_process = subprocess.Popen(["ffmpeg", "-i", joined_url], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         out, err = ffmpeg_process.communicate()
 
-        stream_details = []
-        streams = self.__parse(str(err))
-        for stream in streams:
-            typ = (self.__parse(stream, regex = r"[a-zA-Z]\D[a-zA-Z]+\b"))
-            track = (self.__parse(stream, regex = r"\d.\d"))
-            stream_details.append({"type" : typ , "track" : track})
+        return self.__parse(str(err))
 
-        return stream_details
+    def __parse(self, output):
+        regex = r"(Stream\s?.(\d.\d).?(\w+)..\s(\w+)|Stream\s?.(\d.\d).?(\(?|\w+)\s(\w+))"
 
-    def __parse(self, output, regex = r"Stream\s?.\d?.\d?.\w+..\s\w+"):
-        result = []
+        streams = []
         matches = re.finditer(regex, output)
         for matchNum, match in enumerate(matches):
-            matchNum = matchNum + 1
+            details = []
+            for groupNum in range(1, len(match.groups())):
+                groupNum = groupNum + 1
 
-            result.append(match.group())
+                if match.group(groupNum) is not None:
+                    details.append(match.group(groupNum))
 
-        return result
+            stream = {"id" : details[0], "language" : details[1], "type" : details[2]}
+            streams.append(stream)
+
+        return {"streams" : streams}
