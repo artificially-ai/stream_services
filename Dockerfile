@@ -2,7 +2,7 @@ FROM debian:latest
 
 RUN apt-get -y update && apt-get install -y vim procps python3-pip ffmpeg
 
-RUN pip3 install numpy scipy pillow opencv-python pytesseract requests Flask
+RUN pip3 install numpy scipy pillow opencv-python==3.2.0.8 pytesseract requests Flask
 
 ADD . /ekholabs/stream_services
 
