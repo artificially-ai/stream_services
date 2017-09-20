@@ -1,12 +1,10 @@
 from controller.FFMpegService import ffmpeg_service
-from controller.OCRService import ocr_service
 
 from flask import Flask, redirect
 
 app = Flask(__name__)
 
 app.register_blueprint(ffmpeg_service, url_prefix = "/ffmpeg")
-app.register_blueprint(ocr_service, url_prefix = "/ocr")
 
 @app.route('/')
 def index():
