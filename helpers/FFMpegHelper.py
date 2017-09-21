@@ -7,6 +7,8 @@ import multiprocessing
 import subprocess
 import re
 
+import logging
+
 class FFMpeg:
 
     def extract_stream_details(self, video_url):
@@ -24,6 +26,8 @@ class FFMpeg:
         path = quote(parsed_video_url.path)
         joined_url = urljoin(parsed_video_url.geturl(), path)
 
+        logging.info(streams)
+
         subtitles = []
         for details in streams["streamDetails"]:
             file_name = str(uuid.uuid4()) + ".srt"
@@ -35,9 +39,8 @@ class FFMpeg:
             with open(file_name, "r") as f:
                 subtitles_text = "".join(f.readlines())
                 f.close()
-            os.remove(file_name)
-
-            subtitles.append(subtitles_text)
+                subtitles.append(subtitles_text)
+                os.remove(file_name)
         return "\n".join(subtitles)
 
     def __parse(self, output):
