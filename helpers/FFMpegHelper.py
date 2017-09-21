@@ -1,5 +1,8 @@
 from urllib.parse import urlparse, urljoin, quote
 
+import os
+
+import uuid
 import multiprocessing
 import subprocess
 import re
@@ -15,6 +18,27 @@ class FFMpeg:
         out, err = ffmpeg_process.communicate()
 
         return self.__parse(str(err))
+
+    def extract_subtitles(self, streams):
+        parsed_video_url = urlparse(streams["videoUrl"]["url"])
+        path = quote(parsed_video_url.path)
+        joined_url = urljoin(parsed_video_url.geturl(), path)
+
+        subtitles = []
+        for details in streams["streamDetails"]:
+            file_name = str(uuid.uuid4()) + ".srt"
+
+            ffmpeg_process = subprocess.Popen(["ffmpeg", "-i", joined_url, "-map", details["id"], file_name], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            out, err = ffmpeg_process.communicate()
+
+            subtitles_text = ""
+            with open(file_name, "r") as f:
+                subtitles_text = "".join(f.readlines())
+                f.close()
+            os.remove(file_name)
+
+            subtitles.append(subtitles_text)
+        return "\n".join(subtitles)
 
     def __parse(self, output):
         regex = r"(Stream\s?.(\d.\d).?(\w+)..\s(\w+)|Stream\s?.(\d.\d).?(\(?|\w+)\s(\w+))"
