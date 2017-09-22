@@ -36,7 +36,7 @@ class FFMpeg:
             out, err = ffmpeg_process.communicate()
 
             subtitles_text = ""
-            with open(file_name, "r") as f:
+            with open(file_name, "r", encoding = "utf-8") as f:
                 subtitles_text = "".join(f.readlines())
                 f.close()
                 subtitles.append(subtitles_text)
