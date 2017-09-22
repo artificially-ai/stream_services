@@ -41,7 +41,7 @@ class FFMpeg:
                 f.close()
                 subtitles.append(subtitles_text)
                 os.remove(file_name)
-        return "\n".join(subtitles)
+        return " -- ".join(subtitles)
 
     def __parse(self, output):
         regex = r"(Stream\s?.(\d.\d).?(\w+)..\s(\w+)|Stream\s?.(\d.\d).?(\(?|\w+)\s(\w+))"
